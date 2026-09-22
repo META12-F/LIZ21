@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <!-- Meta tag crítico para adaptabilidad móvil perfecta y bloqueo de zoom accidental -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Protocolo Yellow Flowers - Para Liz</title>
     
@@ -39,6 +40,7 @@
             overflow-x: hidden;
             font-family: 'Inter', sans-serif;
             scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent; /* Evita destellos azules al tocar en móviles */
         }
 
         /* --- TERMINAL STYLES --- */
@@ -49,20 +51,24 @@
             z-index: 9999;
             display: flex;
             flex-direction: column;
-            padding: 2rem;
+            padding: 1.5rem;
             font-family: 'Fira Code', monospace;
             color: #00FF41;
-            transition: opacity 2s ease-in-out, visibility 2s;
+            transition: opacity 1.5s ease-in-out, visibility 1.5s;
+            font-size: 0.8rem; /* Letra más pequeña por defecto para móviles */
+        }
+        @media (min-width: 768px) {
+            #terminal-screen { font-size: 1rem; padding: 3rem; }
         }
         .term-line {
             margin-bottom: 0.5rem;
             opacity: 0;
-            text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+            text-shadow: 0 0 5px rgba(0, 255, 65, 0.4);
+            word-wrap: break-word; /* Para que comandos largos no desborden en celular */
         }
         .cursor-blink {
             display: inline-block;
-            width: 10px;
-            height: 20px;
+            width: 8px; height: 16px;
             background-color: #00FF41;
             animation: blink 1s step-end infinite;
             vertical-align: middle;
@@ -89,32 +95,33 @@
         /* Glassmorphism Premium */
         .glass-card {
             background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); /* Soporte iOS Safari */
             border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(250, 204, 21, 0.05);
-            border-radius: 1.5rem;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 0 0 1px rgba(250, 204, 21, 0.05);
+            border-radius: 1.25rem;
+            transition: all 0.4s ease;
         }
-        .glass-card:hover {
-            border-color: rgba(250, 204, 21, 0.3);
-            box-shadow: 0 15px 45px 0 rgba(250, 204, 21, 0.15), inset 0 0 0 1px rgba(250, 204, 21, 0.1);
-            transform: translateY(-5px);
+        @media (min-width: 768px) {
+            .glass-card { border-radius: 1.5rem; }
+            .glass-card:hover {
+                border-color: rgba(250, 204, 21, 0.3);
+                box-shadow: 0 15px 45px 0 rgba(250, 204, 21, 0.15), inset 0 0 0 1px rgba(250, 204, 21, 0.1);
+                transform: translateY(-5px);
+            }
         }
 
         .reveal {
             opacity: 0;
-            transform: translateY(40px);
-            transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
 
-        .text-glow {
-            text-shadow: 0 0 20px rgba(250, 204, 21, 0.4);
-        }
+        .text-glow { text-shadow: 0 0 15px rgba(250, 204, 21, 0.4); }
         .gradient-text {
             background: linear-gradient(135deg, #FEF08A, #FACC15, #CA8A04);
             -webkit-background-clip: text;
@@ -122,114 +129,143 @@
             background-clip: text;
         }
 
-        /* Botón Mágico */
         .magic-btn {
             position: relative;
             background: transparent;
             color: #FACC15;
             font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            padding: 1rem 2rem;
             border-radius: 50px;
             border: 1px solid rgba(250, 204, 21, 0.5);
             overflow: hidden;
             transition: all 0.4s ease;
             cursor: pointer;
             z-index: 1;
+            width: 100%; /* Ajuste a celular */
+            max-width: 320px;
+        }
+        @media (min-width: 768px) {
+            .magic-btn { font-size: 1.5rem; padding: 1rem 3rem; max-width: none; width: auto; }
         }
         .magic-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(45deg, #FACC15, #CA8A04);
-            z-index: -1;
-            transition: all 0.4s ease;
-            opacity: 0;
+            z-index: -1; transition: all 0.4s ease; opacity: 0;
         }
-        .magic-btn:hover {
-            color: #050914;
-            border-color: transparent;
-            box-shadow: 0 0 30px rgba(250, 204, 21, 0.6);
-            transform: scale(1.05);
+        .magic-btn:active, .magic-btn:hover {
+            color: #050914; border-color: transparent; box-shadow: 0 0 25px rgba(250, 204, 21, 0.5); transform: scale(1.02);
         }
-        .magic-btn:hover::before {
-            opacity: 1;
-        }
+        .magic-btn:active::before, .magic-btn:hover::before { opacity: 1; }
         
         .video-container {
             position: relative;
-            padding-bottom: 56.25%;
+            padding-bottom: 56.25%; /* Ratio 16:9 */
             height: 0;
             overflow: hidden;
             border-radius: 1rem;
+            width: 100%;
         }
         .video-container iframe {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
         }
 
-        /* Animación para el arreglo floral al darle click */
         @keyframes bouquet-joy {
-            0% { transform: scale(1); filter: brightness(1) sepia(0); box-shadow: 0 0 20px rgba(250,204,21,0.3); }
-            30% { transform: scale(1.08) translateY(-10px); filter: brightness(1.2) sepia(0.2); box-shadow: 0 0 60px rgba(250,204,21,0.8); }
-            50% { transform: scale(1.04) translateY(-5px); filter: brightness(1.1); box-shadow: 0 0 40px rgba(250,204,21,0.5); }
-            70% { transform: scale(1.08) translateY(-8px); filter: brightness(1.2) sepia(0.2); box-shadow: 0 0 60px rgba(250,204,21,0.8); }
-            100% { transform: scale(1); filter: brightness(1) sepia(0); box-shadow: 0 0 20px rgba(250,204,21,0.3); }
+            0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(250,204,21,0.2)); }
+            30% { transform: scale(1.1) translateY(-10px) rotate(2deg); filter: drop-shadow(0 0 35px rgba(250,204,21,0.8)); }
+            50% { transform: scale(1.05) translateY(-3px) rotate(-1deg); filter: drop-shadow(0 0 20px rgba(250,204,21,0.5)); }
+            70% { transform: scale(1.1) translateY(-8px) rotate(1deg); filter: drop-shadow(0 0 35px rgba(250,204,21,0.8)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(250,204,21,0.2)); }
         }
         .animate-bouquet {
             animation: bouquet-joy 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        
+        @keyframes float-svg {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .floating-svg { animation: float-svg 4s ease-in-out infinite; }
+
+        /* Estilos para los mensajes flotantes */
+        @keyframes float-up-msg {
+            0% { opacity: 1; transform: translateY(0) scale(0.8); }
+            10% { transform: translateY(-10px) scale(1.1); }
+            100% { opacity: 0; transform: translateY(-100px) scale(1); }
+        }
+        .floating-message {
+            position: fixed;
+            pointer-events: none;
+            color: #FACC15;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-style: italic;
+            font-weight: 600;
+            text-align: center;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.9), 0 0 20px rgba(250, 204, 21, 0.6);
+            z-index: 10000;
+            animation: float-up-msg 2.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            width: max-content;
+            max-width: 85vw;
+            white-space: normal;
+        }
+        @media (min-width: 768px) {
+            .floating-message { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Terminal -->
     <div id="terminal-screen">
         <div id="term-content"></div>
         <div id="term-input-line" style="display: none;">
-            <span class="text-brand-terminal">root@dtorres-sys:~#</span> 
+            <span class="text-brand-terminal">root@dtorres:~#</span> 
             <span id="term-typing"></span><span class="cursor-blink"></span>
         </div>
     </div>
 
+    <!-- Canvas de Física -->
     <canvas id="bg-canvas"></canvas>
 
+    <!-- Contenido Principal -->
     <div id="main-ui" class="min-h-screen w-full flex flex-col items-center">
         
-        <header class="min-h-screen flex flex-col justify-center items-center text-center px-4 w-full relative">
-            <div class="reveal mt-12">
-                <p class="font-mono text-brand-yellow/70 tracking-[0.4em] uppercase text-xs md:text-sm mb-6 drop-shadow-md">
+        <header class="min-h-screen flex flex-col justify-center items-center text-center px-6 w-full relative">
+            <div class="reveal mt-10">
+                <p class="font-mono text-brand-yellow/80 tracking-[0.3em] uppercase text-[0.65rem] md:text-sm mb-4 md:mb-6 drop-shadow-md">
                     System.out.println("21_Septiembre");
                 </p>
-                <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-glow">
+                <h1 class="font-serif text-5xl md:text-7xl lg:text-8xl font-bold mb-4 md:mb-6 text-glow leading-tight">
                     Protocolo <br>
                     <span class="gradient-text italic">Flores Amarillas</span>
                 </h1>
-                <p class="font-sans text-lg md:text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed mb-12">
+                <p class="font-sans text-base md:text-xl text-gray-400 max-w-2xl mx-auto font-light leading-relaxed mb-10">
                     Ejecutado con máxima precisión, cariño y la intención de dibujar una sonrisa en tu rostro, Liz.
                 </p>
-                <div class="animate-pulse mt-12 text-brand-yellow text-3xl opacity-60">
-                    <svg class="w-8 h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                <div class="animate-pulse mt-8 text-brand-yellow text-3xl opacity-60">
+                    <svg class="w-6 h-6 md:w-8 md:h-8 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
                 </div>
             </div>
         </header>
 
-        <section class="py-24 px-4 w-full max-w-4xl mx-auto">
-            <div class="glass-card p-8 md:p-14 reveal">
-                <div class="flex items-center gap-4 mb-8">
-                    <div class="w-12 h-12 rounded-full bg-brand-yellow/10 flex items-center justify-center border border-brand-yellow/20">
-                        <span class="text-2xl">⏳</span>
+        <section class="py-16 md:py-24 px-4 w-full max-w-4xl mx-auto">
+            <div class="glass-card p-6 md:p-14 reveal">
+                <div class="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
+                    <div class="w-10 h-10 md:w-12 md:h-12 flex-shrink-0 rounded-full bg-brand-yellow/10 flex items-center justify-center border border-brand-yellow/20">
+                        <span class="text-xl md:text-2xl">⏳</span>
                     </div>
-                    <h2 class="font-serif text-3xl md:text-4xl text-white">Análisis de Datos: <span class="text-brand-yellow">Ayer y Hoy</span></h2>
+                    <h2 class="font-serif text-2xl md:text-4xl text-white">Análisis: <span class="text-brand-yellow block md:inline mt-1 md:mt-0">Ayer y Hoy</span></h2>
                 </div>
                 
-                <div class="space-y-6 text-gray-300 font-sans text-lg font-light leading-relaxed">
+                <div class="space-y-5 text-gray-300 font-sans text-base md:text-lg font-light leading-relaxed">
                     <p>
-                        <strong class="text-white font-medium">Log [Ayer]:</strong> Fue un día invaluable. Me escuchaste con el alma, analizaste mis problemas y me diste consejos que procesé como oro puro. Eres una persona con una capacidad de empatía extraordinaria, y te agradezco profundamente ese tiempo.
+                        <strong class="text-white font-medium">Log [Ayer]:</strong> Fue un día invaluable. Me escuchaste con el alma, analizaste mis problemas y me diste consejos que procesé como oro puro. Eres una persona con una capacidad de empatía extraordinaria.
                     </p>
                     <p>
-                        <strong class="text-white font-medium">Log [Hoy]:</strong> Noté tu silencio en el sistema. Como programador, analizo variables; como persona, me quedé pensando. Si por alguna razón ejecuté un comando erróneo, dije algo fuera de lugar o te hice sentir incómoda, <span class="text-brand-yellow">te pido la disculpa más sincera del mundo.</span>
+                        <strong class="text-white font-medium">Log [Hoy]:</strong> Noté tu silencio en el sistema. Como programador, analizo variables; como persona, me quedé pensando. Si ejecuté un comando erróneo o te hice sentir incómoda, <span class="text-brand-yellow">te pido la disculpa más sincera del mundo.</span>
                     </p>
-                    <div class="pl-6 border-l-2 border-brand-yellow/30 mt-6 italic text-gray-400">
+                    <div class="pl-4 md:pl-6 border-l-2 border-brand-yellow/30 mt-4 italic text-gray-400 text-sm md:text-base">
                         "Mi único objetivo en tu red es sumar cosas positivas. Por eso, no podía dejar que el día terminara sin compilar este detalle para ti."
                     </div>
                 </div>
@@ -237,62 +273,120 @@
         </section>
 
         <section class="py-16 px-4 w-full max-w-4xl mx-auto reveal">
-            <div class="glass-card p-8 md:p-14 text-center flex flex-col items-center border-t border-brand-yellow/30 relative overflow-hidden">
+            <div class="glass-card p-6 md:p-14 text-center flex flex-col items-center border-t border-brand-yellow/30 relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-b from-brand-yellow/5 to-transparent pointer-events-none"></div>
-                <h3 class="font-serif text-3xl md:text-4xl text-brand-yellow mb-8 relative z-10">Un Jardín Eterno 🌻</h3>
+                <h3 class="font-serif text-2xl md:text-4xl text-brand-yellow mb-4 md:mb-8 relative z-10 leading-snug">Un Jardín Vectorial Eterno 🌻</h3>
+                <p class="text-gray-400 text-xs md:text-sm mb-8 font-mono">// Cero imágenes. 100% Matemáticas.</p>
                 
-                <div class="relative inline-block cursor-pointer group" id="bouquet-container">
-                    <!-- Efecto de brillo de fondo al hacer hover -->
-                    <div class="absolute inset-0 rounded-2xl bg-brand-yellow/20 blur-2xl transition-all duration-500 group-hover:bg-brand-yellow/40"></div>
+                <!-- Área táctil para el SVG -->
+                <div class="relative inline-block cursor-pointer group floating-svg p-4 md:p-0" id="bouquet-container">
                     
-                    <!-- Imagen del arreglo floral -->
-                    <img 
-                        id="bouquet-img" 
-                        src="watermarked_img_10753575975621905507.jpg" 
-                        alt="Arreglo de Flores Amarillas" 
-                        class="relative rounded-2xl shadow-[0_0_20px_rgba(250,204,21,0.3)] border border-brand-yellow/40 max-w-xs md:max-w-md w-full transition-transform duration-300 group-hover:scale-[1.02] z-10"
-                    >
-                    <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-brand-dark/80 text-brand-yellow border border-brand-yellow/30 px-4 py-1 rounded-full text-xs tracking-widest uppercase backdrop-blur-md z-20 animate-bounce">
+                    <svg id="bouquet-svg" viewBox="0 0 500 600" class="w-full max-w-[280px] md:max-w-md mx-auto drop-shadow-[0_10px_20px_rgba(250,204,21,0.2)]" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="vaseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.1"/>
+                                <stop offset="50%" stop-color="#ffffff" stop-opacity="0.3"/>
+                                <stop offset="100%" stop-color="#ffffff" stop-opacity="0.05"/>
+                            </linearGradient>
+                            <radialGradient id="sunCenter" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#5B3E31"/>
+                                <stop offset="100%" stop-color="#1A0F09"/>
+                            </radialGradient>
+                            <linearGradient id="petalGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#FDE047"/>
+                                <stop offset="100%" stop-color="#CA8A04"/>
+                            </linearGradient>
+                            <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#4ADE80"/>
+                                <stop offset="100%" stop-color="#166534"/>
+                            </linearGradient>
+
+                            <g id="petal">
+                                <path d="M0,0 C-15,-20 -15,-50 0,-60 C15,-50 15,-20 0,0" fill="url(#petalGrad)"/>
+                            </g>
+                            <g id="leaf">
+                                <path d="M0,0 C-20,-10 -40,-30 0,-60 C40,-30 20,-10 0,0" fill="url(#leafGrad)"/>
+                                <line x1="0" y1="0" x2="0" y2="-55" stroke="#14532d" stroke-width="2"/>
+                            </g>
+                            <g id="sunflower">
+                                <g transform="scale(0.95) rotate(15)">
+                                    <use href="#petal" transform="rotate(0)" /><use href="#petal" transform="rotate(30)" /><use href="#petal" transform="rotate(60)" /><use href="#petal" transform="rotate(90)" /><use href="#petal" transform="rotate(120)" /><use href="#petal" transform="rotate(150)" /><use href="#petal" transform="rotate(180)" /><use href="#petal" transform="rotate(210)" /><use href="#petal" transform="rotate(240)" /><use href="#petal" transform="rotate(270)" /><use href="#petal" transform="rotate(300)" /><use href="#petal" transform="rotate(330)" />
+                                </g>
+                                <use href="#petal" transform="rotate(0)" /><use href="#petal" transform="rotate(30)" /><use href="#petal" transform="rotate(60)" /><use href="#petal" transform="rotate(90)" /><use href="#petal" transform="rotate(120)" /><use href="#petal" transform="rotate(150)" /><use href="#petal" transform="rotate(180)" /><use href="#petal" transform="rotate(210)" /><use href="#petal" transform="rotate(240)" /><use href="#petal" transform="rotate(270)" /><use href="#petal" transform="rotate(300)" /><use href="#petal" transform="rotate(330)" />
+                                <circle cx="0" cy="0" r="28" fill="url(#sunCenter)"/>
+                                <circle cx="0" cy="0" r="25" fill="none" stroke="#EAB308" stroke-width="1" stroke-dasharray="2,2" opacity="0.5"/>
+                            </g>
+                            <g id="tulip">
+                                <path d="M-15,0 C-30,-30 -20,-60 0,-70 C20,-60 30,-30 15,0 Z" fill="#EAB308"/>
+                                <path d="M-5,5 C-20,-20 -10,-55 0,-65 C10,-55 20,-20 5,5 Z" fill="#FACC15"/>
+                                <path d="M-10,0 C-10,-40 0,-60 0,-60 C0,-60 10,-40 10,0 Z" fill="#FEF08A"/>
+                            </g>
+                        </defs>
+
+                        <!-- Tallos -->
+                        <path d="M250,500 Q240,350 250,200" fill="none" stroke="#166534" stroke-width="6"/>
+                        <path d="M250,500 Q200,350 140,240" fill="none" stroke="#166534" stroke-width="5"/>
+                        <path d="M250,500 Q300,350 360,250" fill="none" stroke="#166534" stroke-width="5"/>
+                        <!-- Hojas -->
+                        <use href="#leaf" x="240" y="380" transform="rotate(-40 240 380) scale(0.8)"/>
+                        <use href="#leaf" x="260" y="340" transform="rotate(50 260 340) scale(0.9)"/>
+                        <use href="#leaf" x="180" y="320" transform="rotate(-60 180 320) scale(0.7)"/>
+                        <use href="#leaf" x="320" y="330" transform="rotate(60 320 330) scale(0.8)"/>
+
+                        <!-- Flores -->
+                        <use href="#tulip" x="100" y="310" transform="rotate(-20 100 310) scale(0.8)"/>
+                        <use href="#tulip" x="400" y="330" transform="rotate(25 400 330) scale(0.8)"/>
+                        <use href="#sunflower" x="140" y="240" transform="scale(0.85) rotate(-15 140 240)"/>
+                        <use href="#sunflower" x="360" y="250" transform="scale(0.85) rotate(20 360 250)"/>
+                        <use href="#sunflower" x="250" y="200" transform="scale(1.2)"/>
+
+                        <!-- Jarrón -->
+                        <path d="M 200,600 Q 180,600 180,500 L 210,400 Q 250,420 290,400 L 320,500 Q 320,600 300,600 Z" fill="rgba(15, 23, 42, 0.7)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="2"/>
+                        <path d="M 210,400 Q 250,420 290,400 L 320,500 Q 320,600 300,600 Z" fill="url(#vaseGrad)"/>
+                        <ellipse cx="250" cy="400" rx="40" ry="10" fill="rgba(0,0,0,0.6)"/>
+                    </svg>
+
+                    <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-brand-yellow text-brand-dark font-bold px-4 py-1.5 rounded-full text-[10px] md:text-xs tracking-widest uppercase shadow-lg shadow-brand-yellow/40 z-20 animate-bounce whitespace-nowrap">
                         Toca las flores
                     </div>
                 </div>
 
-                <p class="text-brand-yellow font-serif text-2xl md:text-3xl leading-relaxed mt-12 max-w-2xl mx-auto italic relative z-10">
-                    "Estas jamás se van a marchitar. Siempre que le des click se alegrarán de verte."
+                <p class="text-brand-yellow font-serif text-lg md:text-2xl leading-relaxed mt-12 max-w-2xl mx-auto italic relative z-10">
+                    "Estas jamás se van a marchitar. Están hechas de código puro y siempre que las toques saltarán de alegría al verte."
                 </p>
             </div>
         </section>
 
-        <section class="py-24 px-4 w-full max-w-5xl mx-auto">
-            <h2 class="font-serif text-4xl md:text-5xl text-center text-white mb-16 reveal">Lo que mi <span class="italic text-brand-yellow">código fuente</span> desea darte</h2>
+        <section class="py-16 md:py-24 px-4 w-full max-w-5xl mx-auto">
+            <h2 class="font-serif text-3xl md:text-5xl text-center text-white mb-10 md:mb-16 reveal leading-tight">Lo que mi <span class="italic text-brand-yellow block mt-1">código fuente</span> desea darte</h2>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="glass-card p-10 reveal border-t-4 border-t-brand-yellow">
-                    <h3 class="font-serif text-3xl text-brand-yellow mb-6 flex items-center gap-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <div class="glass-card p-6 md:p-10 reveal border-t-4 border-t-brand-yellow">
+                    <h3 class="font-serif text-xl md:text-3xl text-brand-yellow mb-4 md:mb-6 flex items-center gap-3">
                         <span>🎸</span> Frecuencias Perfectas
                     </h3>
-                    <p class="text-gray-300 font-light text-lg leading-relaxed">
-                        Me gustaría tomar mi guitarra acústica y componer melodías completamente originales para ti. Dedicar horas a grabar el audio, ecualizarlo, masterizarlo a la perfección en el estudio, solo para asegurar que escuches una obra maestra hecha a tu medida.
+                    <p class="text-gray-300 font-light text-base md:text-lg leading-relaxed">
+                        Me gustaría tomar mi guitarra acústica y componer melodías originales para ti. Dedicar horas a grabar el audio y masterizarlo en el estudio, solo para que escuches una obra hecha a tu medida.
                     </p>
                 </div>
                 
-                <div class="glass-card p-10 reveal border-t-4 border-t-brand-yellow transition delay-150">
-                    <h3 class="font-serif text-3xl text-brand-yellow mb-6 flex items-center gap-3">
+                <div class="glass-card p-6 md:p-10 reveal border-t-4 border-t-brand-yellow transition delay-100">
+                    <h3 class="font-serif text-xl md:text-3xl text-brand-yellow mb-4 md:mb-6 flex items-center gap-3">
                         <span>📝</span> Líneas de Poesía
                     </h3>
-                    <p class="text-gray-300 font-light text-lg leading-relaxed">
-                        No solo sé escribir código; si me lo permites, quiero escribirte cientos de poemas. Palabras estructuradas no para compilar en una máquina, sino para hacer eco en tu corazón, demostrando lo increíble que eres ante mis ojos.
+                    <p class="text-gray-300 font-light text-base md:text-lg leading-relaxed">
+                        No solo sé escribir código; si me lo permites, quiero escribirte poemas. Palabras estructuradas no para compilar en una máquina, sino para hacer eco en tu corazón.
                     </p>
                 </div>
             </div>
         </section>
 
         <section class="py-12 px-4 w-full max-w-4xl mx-auto">
-            <div class="glass-card p-6 md:p-10 reveal">
-                <h3 class="font-serif text-3xl md:text-4xl text-brand-yellow mb-4 text-center">Nuestra Frecuencia 🎶</h3>
-                <p class="text-gray-400 text-center mb-8 font-light">Una melodía que expresa lo que los logs de texto a veces no pueden.</p>
+            <div class="glass-card p-4 md:p-10 reveal">
+                <h3 class="font-serif text-2xl md:text-4xl text-brand-yellow mb-3 md:mb-4 text-center">Nuestra Frecuencia 🎶</h3>
+                <p class="text-gray-400 text-sm md:text-base text-center mb-6 md:mb-8 font-light">Una melodía que expresa lo que los logs de texto a veces no pueden.</p>
                 
-                <div class="video-container shadow-2xl shadow-brand-yellow/10">
+                <div class="video-container shadow-xl shadow-brand-yellow/10 border border-brand-yellow/20 rounded-xl md:rounded-2xl">
                     <iframe 
                         src="https://www.youtube.com/embed/e7_h4WNnlTU" 
                         title="YouTube video player" 
@@ -304,11 +398,11 @@
             </div>
         </section>
 
-        <section class="py-32 px-4 flex flex-col items-center justify-center text-center reveal">
-            <h2 class="font-serif text-4xl md:text-6xl text-white mb-8">
+        <section class="py-24 md:py-32 px-4 flex flex-col items-center justify-center text-center reveal">
+            <h2 class="font-serif text-3xl md:text-6xl text-white mb-6 md:mb-8 leading-snug">
                 Pero ningún algoritmo supera tu belleza.
             </h2>
-            <p class="text-gray-400 font-mono text-sm mb-12 max-w-xl">
+            <p class="text-gray-400 font-mono text-[10px] md:text-sm mb-10 max-w-xl px-2">
                 // System.ready(); Esperando confirmación de usuario para sobrecargar el sistema de flores.
             </p>
             
@@ -317,23 +411,25 @@
             </button>
         </section>
 
-        <footer class="py-16 text-center w-full reveal bg-black/40 border-t border-white/5">
-            <p class="font-mono text-xs text-brand-terminal mb-3">&gt; Executed successfully. Session closed.</p>
-            <p class="font-mono text-xs text-gray-500 mb-2">Developed with ❤️ & Advanced JavaScript by</p>
-            <p class="font-serif text-4xl md:text-5xl text-white tracking-widest mt-4 text-glow">David Torres</p>
+        <footer class="py-12 md:py-16 text-center w-full reveal bg-black/40 border-t border-white/5">
+            <p class="font-mono text-[10px] md:text-xs text-brand-terminal mb-3">&gt; Executed successfully. Session closed.</p>
+            <p class="font-mono text-[10px] md:text-xs text-gray-500 mb-2">Developed with ❤️ & Pure Mathematics by</p>
+            <p class="font-serif text-3xl md:text-5xl text-white tracking-widest mt-2 md:mt-4 text-glow">David Torres</p>
         </footer>
     </div>
 
     <script>
+        // --- DETECCIÓN MÓVIL ---
+        const isMobile = window.innerWidth <= 768;
+
         const terminalCommands = [
             "Initializing secure connection to Liz_Network...",
+            isMobile ? "Mobile device detected. Scaling UI..." : "Desktop device detected. Initiating graphics...",
             "Loading Yellow_Flowers_Protocol.js...",
             "Analyzing Yesterday_Log.txt [STATUS: Incredible]",
             "Bypassing Today_Silence_Error [STATUS: Resolved with apologies]",
             "Compiling poetry modules...",
-            "Calibrating acoustic guitar frequencies...",
-            "Decrypting true feelings...",
-            "Mounting eternal_bouquet_module.jpg...",
+            "Rendering pure math SVG vectors...",
             "System Ready. Executing Visual Interface..."
         ];
 
@@ -346,15 +442,18 @@
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
         async function typeTerminal() {
+            // En móvil, tipeamos más rápido para no desesperar al usuario
+            const speedMultiplier = isMobile ? 0.6 : 1;
+
             for (let i = 0; i < terminalCommands.length - 1; i++) {
                 let div = document.createElement('div');
                 div.className = 'term-line';
                 div.innerHTML = `<span class="text-gray-500">[${new Date().toISOString().split('T')[1].substring(0,8)}]</span> ${terminalCommands[i]}`;
                 termContent.appendChild(div);
                 
-                await sleep(100);
+                await sleep(50 * speedMultiplier); 
                 div.style.opacity = 1;
-                await sleep(400 + Math.random() * 500);
+                await sleep((250 + Math.random() * 300) * speedMultiplier);
             }
 
             termInputLine.style.display = 'block';
@@ -362,10 +461,10 @@
             
             for (let i = 0; i < finalCmd.length; i++) {
                 termTyping.innerHTML += finalCmd.charAt(i);
-                await sleep(50 + Math.random() * 30);
+                await sleep(30 * speedMultiplier);
             }
 
-            await sleep(800);
+            await sleep(500 * speedMultiplier);
 
             terminalScreen.style.opacity = '0';
             setTimeout(() => {
@@ -374,27 +473,25 @@
                 mainUI.style.opacity = '1';
                 initCanvas();
                 initScrollReveal();
-            }, 2000);
+            }, 1000);
         }
 
-        window.onload = () => {
-            setTimeout(typeTerminal, 500);
-        };
+        window.onload = () => setTimeout(typeTerminal, 200);
 
+        // --- MOTOR FÍSICO 2D (CANVAS) OPTIMIZADO PARA TOUCH ---
         let canvas, ctx;
         let particles = [];
         let mouse = { x: -1000, y: -1000 }; 
         let isExploding = false;
 
         class Petal {
-            constructor() {
-                this.reset(true);
-            }
+            constructor() { this.reset(true); }
 
             reset(randomY = false) {
                 this.x = Math.random() * canvas.width;
                 this.y = randomY ? Math.random() * canvas.height : -50;
-                this.size = Math.random() * 8 + 4;
+                // En móvil las flores son ligeramente más pequeñas
+                this.size = isMobile ? Math.random() * 5 + 3 : Math.random() * 8 + 4;
                 this.vx = (Math.random() - 0.5) * 1;
                 this.vy = Math.random() * 1.5 + 0.5;
                 this.baseVy = this.vy;
@@ -410,14 +507,16 @@
                 let dx = mouse.x - this.x;
                 let dy = mouse.y - this.y;
                 let distance = Math.sqrt(dx * dx + dy * dy);
-                let interactionRadius = isExploding ? 600 : 180;
+                
+                // Radio de interacción más pequeño en celular para no afectar todo
+                let interactionRadius = isExploding ? (isMobile ? 400 : 600) : (isMobile ? 100 : 180);
 
                 if (distance < interactionRadius) {
                     let forceDirectionX = dx / distance;
                     let forceDirectionY = dy / distance;
                     let force = (interactionRadius - distance) / interactionRadius;
                     
-                    let pushFactor = isExploding ? -80 : -8; 
+                    let pushFactor = isExploding ? (isMobile ? -50 : -80) : -6; 
                     
                     this.forceX += forceDirectionX * force * pushFactor;
                     this.forceY += forceDirectionY * force * pushFactor;
@@ -425,7 +524,6 @@
 
                 this.vx += this.forceX;
                 this.vy += this.forceY;
-                
                 this.forceX *= this.friction;
                 this.forceY *= this.friction;
 
@@ -438,9 +536,7 @@
                 this.angle += this.vAngle;
 
                 if (this.y > canvas.height + 50 || this.x < -50 || this.x > canvas.width + 50) {
-                    if (!isExploding) {
-                        this.reset(false);
-                    }
+                    if (!isExploding) this.reset(false);
                 }
             }
 
@@ -454,7 +550,7 @@
                 
                 ctx.fillStyle = this.color;
                 ctx.shadowColor = '#FACC15';
-                ctx.shadowBlur = isExploding ? 20 : 10;
+                ctx.shadowBlur = isExploding ? (isMobile ? 10 : 20) : (isMobile ? 5 : 10);
                 ctx.fill();
                 
                 ctx.restore();
@@ -472,20 +568,28 @@
             window.addEventListener('resize', resize);
             resize();
 
-            window.addEventListener('mousemove', (e) => {
-                mouse.x = e.clientX;
-                mouse.y = e.clientY;
-            });
+            // Eventos Desktop
+            window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+            window.addEventListener('mouseout', () => { mouse.x = -1000; mouse.y = -1000; });
+
+            // Eventos Touch (Mobile) - usamos 'passive: true' para no bloquear el scroll
+            window.addEventListener('touchstart', (e) => {
+                mouse.x = e.touches[0].clientX;
+                mouse.y = e.touches[0].clientY;
+            }, {passive: true});
+            
             window.addEventListener('touchmove', (e) => {
                 mouse.x = e.touches[0].clientX;
                 mouse.y = e.touches[0].clientY;
-            });
-            window.addEventListener('mouseout', () => {
-                mouse.x = -1000;
-                mouse.y = -1000;
-            });
+            }, {passive: true});
 
-            let particleCount = window.innerWidth < 768 ? 60 : 150; 
+            window.addEventListener('touchend', () => {
+                // Darle un pequeño delay antes de quitar la repulsión
+                setTimeout(() => { mouse.x = -1000; mouse.y = -1000; }, 300);
+            }, {passive: true});
+
+            // Optimización: menos partículas en móviles para asegurar fluidez
+            let particleCount = isMobile ? 45 : 120; 
             for (let i = 0; i < particleCount; i++) {
                 particles.push(new Petal());
             }
@@ -495,77 +599,140 @@
 
         function animateLoop() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            
+            particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animateLoop);
         }
 
         function spawnPetalBurst(x, y, count) {
-            for(let i=0; i < count; i++) {
+            // En móviles limitamos un poco la ráfaga para evitar lag
+            const finalCount = isMobile ? Math.min(count, 40) : count;
+            
+            for(let i=0; i < finalCount; i++) {
                 let p = new Petal();
                 p.x = x;
                 p.y = y;
-                
-                // Sobrescribir física inicial para explosión en todas direcciones
                 let angle = Math.random() * Math.PI * 2;
-                let speed = Math.random() * 20 + 5; 
-                
+                let speed = Math.random() * (isMobile ? 15 : 25) + 5; 
                 p.vx = Math.cos(angle) * speed;
                 p.vy = Math.sin(angle) * speed;
                 p.forceX = p.vx;
                 p.forceY = p.vy;
-                
                 particles.push(p);
             }
         }
 
-        // Lógica Interactiva del Arreglo Floral
-        const bouquetImg = document.getElementById('bouquet-img');
-        if(bouquetImg) {
-            bouquetImg.addEventListener('click', function(e) {
-                // Reiniciar y aplicar animación CSS
-                this.classList.remove('animate-bouquet');
-                void this.offsetWidth; // Forzar reflow para reiniciar la animación
-                this.classList.add('animate-bouquet');
+        // --- EVENTOS INTERACTIVOS (SVG y BOTÓN) ---
+        const bouquetContainer = document.getElementById('bouquet-container');
+        const bouquetSvg = document.getElementById('bouquet-svg');
+        
+        // 20 Mensajes románticos y personalizados
+        const romanceMessages = [
+            "Gracias por escucharme ayer con tanta paciencia. 💛",
+            "Eres una persona con una luz y empatía increíbles.",
+            "Prometo componerte una canción hermosa en mi guitarra acústica. 🎸",
+            "Cada palabra tuya ayer valió oro para mí.",
+            "No quería que este día pasara sin intentar hacerte sonreír.",
+            "Eres más bonita que cualquier flor de este jardín virtual. ✨",
+            "Me encantaría escribirte cientos de poemas.",
+            "Perdón si me equivoqué hoy, solo quiero sumarte cosas buenas.",
+            "Grabaré una melodía y la masterizaré solo para ti. 🎶",
+            "Lo que platicamos ayer me dejó pensando en lo especial que eres.",
+            "Un detalle eterno, hecho de código puro especialmente para ti. 🌻",
+            "Espero que este rincón amarillo alegre un poquito tu noche.",
+            "Valoro muchísimo que te hayas cruzado en mi camino.",
+            "Mi único 'bug' de hoy fue no poder hablar contigo. 😅",
+            "Ayer me demostraste el gran corazón que tienes.",
+            "Tus consejos los guardo aquí, procesándolos como oro.",
+            "Una canción original en guitarra acústica te espera. 🎵",
+            "Ojalá esta pantalla logre sacarte una sonrisa hoy.",
+            "Eres magia pura, Liz.",
+            "Las flores físicas se marchitan, estas son para siempre. 💛"
+        ];
+        let lastMsgIndex = -1;
+
+        if(bouquetContainer && bouquetSvg) {
+            // Manejador común para Click y Touch
+            const triggerBouquet = function(e) {
+                bouquetSvg.classList.remove('animate-bouquet');
+                void bouquetSvg.offsetWidth; 
+                bouquetSvg.classList.add('animate-bouquet');
                 
-                // Obtener coordenadas de la imagen relativas al viewport
-                const rect = this.getBoundingClientRect();
+                const rect = bouquetSvg.getBoundingClientRect();
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
                 
-                // Disparar ráfaga de pétalos desde el centro de la imagen
-                spawnPetalBurst(centerX, centerY, 50);
-            });
+                spawnPetalBurst(centerX, centerY, 60);
+
+                // Lógica del Mensaje Flotante
+                let clientX = e.clientX;
+                let clientY = e.clientY;
+
+                // Extraer coordenadas si es un evento táctil (celular)
+                if (e.type.includes('touch')) {
+                    clientX = e.touches[0] ? e.touches[0].clientX : e.changedTouches[0].clientX;
+                    clientY = e.touches[0] ? e.touches[0].clientY : e.changedTouches[0].clientY;
+                } else if (!clientX) { // Fallback al centro
+                    clientX = centerX;
+                    clientY = centerY;
+                }
+
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'floating-message';
+                
+                // Seleccionar mensaje aleatorio que no sea el mismo que el anterior
+                let randIndex;
+                do {
+                    randIndex = Math.floor(Math.random() * romanceMessages.length);
+                } while (randIndex === lastMsgIndex);
+                lastMsgIndex = randIndex;
+                
+                msgDiv.innerText = romanceMessages[randIndex];
+                document.body.appendChild(msgDiv);
+                
+                // Posicionar exactamente en el click
+                requestAnimationFrame(() => {
+                    msgDiv.style.left = (clientX - (msgDiv.offsetWidth / 2)) + 'px';
+                    msgDiv.style.top = (clientY - 30) + 'px';
+                });
+
+                // Eliminar del DOM después de la animación
+                setTimeout(() => {
+                    msgDiv.remove();
+                }, 2800);
+            };
+
+            // Usamos touchstart para mejor respuesta en móviles y click para desktop
+            bouquetContainer.addEventListener('click', triggerBouquet);
+            bouquetContainer.addEventListener('touchstart', function(e) {
+                e.preventDefault(); // Evita doble disparo con click en celulares
+                triggerBouquet(e);
+            }, {passive: false});
         }
 
         function initScrollReveal() {
             const reveals = document.querySelectorAll('.reveal');
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('active');
-                    }
+                    if (entry.isIntersecting) { entry.target.classList.add('active'); }
                 });
-            }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+            }, { threshold: 0.1, rootMargin: "0px 0px -20px 0px" });
 
             reveals.forEach(el => observer.observe(el));
         }
 
-        document.getElementById('magic-btn').addEventListener('click', function(e) {
+        // Botón final
+        const magicBtn = document.getElementById('magic-btn');
+        magicBtn.addEventListener('click', function(e) {
             isExploding = true;
             
+            // Centrar cursor virtual
             mouse.x = window.innerWidth / 2;
             mouse.y = window.innerHeight / 2;
 
-            this.innerHTML = "¡Protocolo Completado, Liz! 💛";
+            this.innerHTML = "¡Completado! 💛"; // Texto más corto para móvil
             this.style.background = "#FACC15";
             this.style.color = "#050914";
-            this.style.transform = "scale(1.1)";
-            this.style.boxShadow = "0 0 50px rgba(250, 204, 21, 0.8)";
+            this.style.boxShadow = "0 0 40px rgba(250, 204, 21, 0.8)";
             this.style.pointerEvents = "none"; 
 
             spawnPetalBurst(mouse.x, mouse.y, 80);
@@ -573,7 +740,7 @@
             setTimeout(() => {
                 isExploding = false;
                 mouse.x = -1000; 
-            }, 1200);
+            }, 1000);
         });
     </script>
 </body>
